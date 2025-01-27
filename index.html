@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Top 10 Ranker</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        input {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #007bff;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .results {
+            display: none;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .result-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            transition: transform 0.2s;
+        }
+
+        .result-item:hover {
+            transform: translateX(5px);
+        }
+
+        .rank {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+            margin-right: 20px;
+            min-width: 40px;
+        }
+
+        .item-name {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .no-results {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Category Top 10 Ranker</h1>
+        
+        <div class="search-container">
+            <input type="text" id="categoryInput" placeholder="Enter a category (try 'fruits')" />
+            <button onclick="searchCategory()">Search</button>
+        </div>
+
+        <div class="results" id="resultsContainer">
+            <!-- Results will be populated here -->
+        </div>
+    </div>
+
+    <script>
+        // Placeholder data
+        const categories = {
+            'fruits': [
+                'Strawberries',
+                'Mangoes',
+                'Blueberries',
+                'Watermelon',
+                'Apples',
+                'Oranges',
+                'Pineapple',
+                'Peaches',
+                'Grapes',
+                'Cherries'
+            ]
+        };
+
+        function searchCategory() {
+            const input = document.getElementById('categoryInput').value.toLowerCase();
+            const resultsContainer = document.getElementById('resultsContainer');
+            resultsContainer.className = 'results active';
+
+            if (categories[input]) {
+                let resultsHTML = '';
+                categories[input].forEach((item, index) => {
+                    resultsHTML += `
+                        <div class="result-item">
+                            <span class="rank">#${index + 1}</span>
+                            <span class="item-name">${item}</span>
+                        </div>
+                    `;
+                });
+                resultsContainer.innerHTML = resultsHTML;
+            } else {
+                resultsContainer.innerHTML = `
+                    <div class="no-results">
+                        No results found for "${input}". Try searching for "fruits"!
+                    </div>
+                `;
+            }
+        }
+
+        // Allow Enter key to trigger search
+        document.getElementById('categoryInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchCategory();
+            }
+        });
+    </script>
+</body>
+</html>
