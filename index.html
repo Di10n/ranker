@@ -109,7 +109,7 @@
         
         <div class="search-container">
             <input type="text" id="categoryInput" placeholder="Enter a category (try 'fruits')" />
-            <button onclick="searchCategory()">Search</button>
+            <button onclick="searchCategory()" id="categorySubmit">Search</button>
         </div>
 
         <div class="results" id="resultsContainer">
@@ -118,30 +118,16 @@
     </div>
 
     <script>
-        // Placeholder data
-        const categories = {
-            'fruits': [
-                'Strawberries',
-                'Mangoes',
-                'Blueberries',
-                'Watermelon',
-                'Apples',
-                'Oranges',
-                'Pineapple',
-                'Peaches',
-                'Grapes',
-                'Cherries'
-            ]
-        };
-
-        function searchCategory() {
+        async function searchCategory() {
             const input = document.getElementById('categoryInput').value.toLowerCase();
             const resultsContainer = document.getElementById('resultsContainer');
             resultsContainer.className = 'results active';
 
-            if (categories[input]) {
-                let resultsHTML = '';
-                categories[input].forEach((item, index) => {
+            const result = await gimme(input);
+            resultsList = result.split(',').map(item => item.trim());
+
+            let resultsHTML = '';
+                resultsList.forEach((item, index) => {
                     resultsHTML += `
                         <div class="result-item">
                             <span class="rank">#${index + 1}</span>
@@ -149,14 +135,7 @@
                         </div>
                     `;
                 });
-                resultsContainer.innerHTML = resultsHTML;
-            } else {
-                resultsContainer.innerHTML = `
-                    <div class="no-results">
-                        No results found for "${input}". Try searching for "fruits"!
-                    </div>
-                `;
-            }
+            resultsContainer.innerHTML = resultsHTML;
         }
 
         // Allow Enter key to trigger search
@@ -165,6 +144,39 @@
                 searchCategory();
             }
         });
+
+        async function gimme(promptText) {
+            // const submitBtn = document.getElementById('categorySubmit');
+
+            if (!promptText.trim()) {
+                alert('Please enter a category.');
+                return;
+            }
+
+            // submitBtn.disabled = true;
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/gimme', {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ prompt: `According to public perception, what are the top 10 ${promptText}? Respond only with a comma-separated list of items ordered from best to worst.` })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    return data.response;
+                } else {
+                    return `Error: ${data.error}`;
+                }
+            } catch (error) {
+                return `Error: ${error.message}`;
+            } finally {
+                // submitBtn.disabled = false;
+            }
+        }
     </script>
 </body>
 </html>
