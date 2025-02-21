@@ -49,9 +49,18 @@ h1 {
     /* margin-bottom: 30px; */
 }
 
-@media (max-width: 450px) {
+@media (max-width: 560px) {
     .search-container {
-        flex-direction: column;
+        flex-wrap: wrap;
+    }
+    
+    .search-container input {
+        width: 100%;
+        flex-basis: 100%;
+    }
+    
+    .search-container button {
+        flex: 1;
     }
 }
 

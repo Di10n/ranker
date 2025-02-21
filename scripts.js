@@ -13,7 +13,7 @@ async function searchCategory(isSpicy = false) {
     resultsContainer.className = 'results active';
     resultsContainer.dataset.category = input;
 
-    const result = await gimme(input, isSpicy);
+    const result = await getRankings(input, isSpicy);
     resultsList = result.split(',').map(item => item.trim());
 
     let resultsHTML = '';
@@ -26,7 +26,7 @@ async function searchCategory(isSpicy = false) {
                     <span class="arrow">▼</span>
                 </div>
                 <div class="result-content" id="content-${index}">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Lorem ipsum dolor sit amet
                 </div>
             </div>
         `;
@@ -47,25 +47,31 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-async function gimme(promptText, isSpicy = false) {
+async function getRankings(promptText, isSpicy = false) {
     if (!promptText.trim()) {
         alert('Please enter a category.');
         return;
     }
 
+    const basePrompt = isSpicy 
+    ? `Give a controversial ranking of the top 10 ${promptText}. Respond only with a comma-separated list of items ordered from best to worst. If there are less than 10 items in the category, the list may be shorter.`
+    : `According to public perception, what are the top 10 ${promptText}? Respond only with a comma-separated list of items ordered from best to worst. If there are less than 10 items in the category, the list may be shorter.`;
+
+    const rankings = await gimme(basePrompt, isSpicy);
+    return rankings;
+}
+
+async function gimme(basePrompt, isSpicy = false) {
     const endpoints = [
         'http://localhost:3000/gimme',
         'https://gimme-public-6b3c3df38d94.herokuapp.com/gimme'
     ];
 
-    const basePrompt = isSpicy 
-        ? `Give a controversial ranking of the top 10 ${promptText}. Respond only with a comma-separated list of items ordered from best to worst. If there are less than 10 items in the category, the list may be shorter.`
-        : `According to public perception, what are the top 10 ${promptText}? Respond only with a comma-separated list of items ordered from best to worst. If there are less than 10 items in the category, the list may be shorter.`;
-
     const promptBody = JSON.stringify({
         prompt: basePrompt,
         temperature: isSpicy ? 1 : 0
     });
+    alert(promptBody);
 
     for (const endpoint of endpoints) {
         try {
