@@ -8,13 +8,14 @@
 </head>
 <body>
     <script src="scripts.js"></script>
+    <h1>Rank Anything!</h1>
     <div class="container">
-        <h1>Rank Anything!</h1>
         <div class="search-container">
             <input type="text" id="categoryInput" placeholder="Enter a category (try 'fruits')" />
-            <button onclick="searchCategory()" id="categorySubmit">Search</button>
+            <button onclick="searchCategory(false)" id="categorySubmit">Search</button>
+            <button onclick="searchCategory(true)" id="spicyButton" class="spicy">Spicy 🌶️</button>
         </div>
-        <div class="results" id="resultsContainer"></div>
     </div>
+    <div class="results" id="resultsContainer"></div>
 </body>
 </html>

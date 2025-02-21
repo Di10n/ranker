@@ -8,21 +8,31 @@
     src: url('Fonts/Montserrat-VariableFont_wght.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: supershiny;
+    src: url('Fonts/SuperShiny.ttf') format('truetype');
+}
+
 body {
     font-family: 'opensans';
     font-weight: 400;
     max-width: 800px;
     margin: 0 auto;
-    padding: 20px;
-    background-color: #f8f8f8;
+    padding: 0px 20px 40px 20px;
+    min-height: 100vh;
+}
+
+html {
+    background: linear-gradient(180deg, #5a5a5a 0%, #2b2b2b 100%) fixed;
 }
 
 h1 {
-    font-family: 'montserrat';
-    font-weight: 600;
-    color: #333;
+    font-family: 'supershiny';
+    font-weight: normal;
+    color: white;
     text-align: center;
     margin-bottom: 30px;
+    font-size: 72px;
 }
 
 .container {
@@ -30,12 +40,13 @@ h1 {
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
 }
 
 .search-container {
     display: flex;
     gap: 10px;
-    margin-bottom: 30px;
+    /* margin-bottom: 30px; */
 }
 
 @media (max-width: 450px) {
@@ -57,6 +68,11 @@ input:focus {
     border-color: #007bff;
 }
 
+input:disabled {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+}
+
 button {
     padding: 10px 20px;
     background-color: #007bff;
@@ -66,10 +82,16 @@ button {
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.2s;
+    width: 120px;
 }
 
 button:hover {
     background-color: #0056b3;
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
 }
 
 .results {
@@ -82,16 +104,40 @@ button:hover {
 
 .result-item {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     padding: 15px;
     margin: 10px 0;
-    background-color: #f8f8f8;
+    background-color: white;
     border-radius: 5px;
     transition: transform 0.2s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    cursor: pointer;
 }
 
-.result-item:hover {
-    transform: translateX(10px);
+.result-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.result-content {
+    display: none;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.result-content.active {
+    display: block;
+}
+
+.arrow {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.arrow.active {
+    transform: rotate(180deg);
 }
 
 .rank {
@@ -105,4 +151,18 @@ button:hover {
 .item-name {
     font-size: 18px;
     color: #333;
+}
+
+button.spicy {
+    background-color: #dc3545;
+}
+
+button.spicy:hover {
+    background-color: #c82333;
+}
+
+button.spicy:disabled {
+    /* background-color: #dc354580; */
+    background-color: #cccccc;
+    filter: grayscale(100%);
 }
