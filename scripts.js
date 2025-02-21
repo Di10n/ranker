@@ -71,7 +71,6 @@ async function gimme(basePrompt, isSpicy = false) {
         prompt: basePrompt,
         temperature: isSpicy ? 1 : 0
     });
-    alert(promptBody);
 
     for (const endpoint of endpoints) {
         try {
